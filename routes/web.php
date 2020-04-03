@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/profile', 'ProfileController@index')->name('profile');
+Route::get('/lists/getLists', 'ListController@getLists')->name('getLists');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
