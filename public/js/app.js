@@ -1960,6 +1960,7 @@ __webpack_require__.r(__webpack_exports__);
         list_id: this.list_id,
         completed: false
       });
+      this.newTODO = '';
     },
     deleteTODO: function deleteTODO(id) {
       this.$store.dispatch('deleteTODO', {
@@ -1988,6 +1989,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todosHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todosHeaderComponent.vue */ "./resources/js/components/todosHeaderComponent.vue");
 /* harmony import */ var _todosListComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todosListComponent.vue */ "./resources/js/components/todosListComponent.vue");
+//
+//
 //
 //
 //
@@ -2045,6 +2048,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch('addList', {
         name: this.newListName
       });
+      this.newListName = '';
       e.preventDefault();
     }
   }
@@ -38352,6 +38356,15 @@ var render = function() {
           attrs: { type: "text", placeholder: "New TODO name" },
           domProps: { value: _vm.newTODO },
           on: {
+            keyup: function($event) {
+              if (
+                !$event.type.indexOf("key") &&
+                _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+              ) {
+                return null
+              }
+              return _vm.addTODO($event)
+            },
             input: function($event) {
               if ($event.target.composing) {
                 return
@@ -38396,8 +38409,10 @@ var render = function() {
     [
       _c("todosHeader"),
       _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
       _vm.todoListsLength === 0
-        ? _c("div", { staticClass: "text-center" }, [
+        ? _c("div", { staticClass: "text-center h5" }, [
             _vm._v("No lists. Let's create one?")
           ])
         : _vm._e(),
@@ -38429,7 +38444,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "text-center" }, [
+  return _c("div", { staticClass: "text-center mb-3" }, [
     _c("h1", [_vm._v("Your TODO lists")]),
     _vm._v(" "),
     _c("form", { on: { submit: _vm.addList } }, [
@@ -38443,13 +38458,21 @@ var render = function() {
           }
         ],
         attrs: {
-          required: "",
           type: "text",
           maxlength: "25",
           placeholder: "Enter new list name"
         },
         domProps: { value: _vm.newListName },
         on: {
+          keyup: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.addList($event)
+          },
           input: function($event) {
             if ($event.target.composing) {
               return

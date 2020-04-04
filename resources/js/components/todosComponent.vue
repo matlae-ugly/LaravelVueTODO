@@ -23,7 +23,7 @@
         <div v-if="todosData.length == 0" class="text-center">No TODOs :(</div>
         <div class="mt-4">
             <div class="text-center pt-1">
-                <input type="text" v-model="newTODO" placeholder="New TODO name"><br>
+                <input type="text"  @keyup.enter="addTODO" v-model="newTODO" placeholder="New TODO name"><br>
                 <span class="add-todo" @click="addTODO">Add todo</span>
             </div>
         </div>
@@ -47,6 +47,7 @@ export default {
     methods: {
         addTODO: function() {
             this.$store.dispatch('addTODO', {name: this.newTODO, list_id: this.list_id, completed: false});
+            this.newTODO = '';
         },
         deleteTODO: function(id) {
             this.$store.dispatch('deleteTODO', {id: id});

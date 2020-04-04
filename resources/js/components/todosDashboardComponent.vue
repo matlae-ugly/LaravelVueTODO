@@ -1,8 +1,10 @@
 <template>
     <div>
         <todosHeader></todosHeader>
-        <div class="text-center" v-if="todoListsLength === 0">No lists. Let's create one?</div>
+         <hr>
+        <div class="text-center h5" v-if="todoListsLength === 0">No lists. Let's create one?</div>
         <todoList></todoList>
+       
     </div>
   
 </template>
