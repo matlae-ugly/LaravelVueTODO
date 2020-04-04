@@ -1935,9 +1935,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'todos',
-  props: ['listID'],
+  props: ['list_id'],
   data: function data() {
     return {
       newTODO: ''
@@ -1945,20 +1950,26 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     todosData: function todosData() {
-      return this.$store.getters.getTodos(this.listID);
+      return this.$store.getters.getTodos(this.list_id);
     }
   },
   methods: {
     addTODO: function addTODO() {
       this.$store.dispatch('addTODO', {
         name: this.newTODO,
-        listID: this.listID
+        list_id: this.list_id,
+        completed: false
       });
     },
     deleteTODO: function deleteTODO(id) {
       this.$store.dispatch('deleteTODO', {
+        id: id
+      });
+    },
+    changeTODO: function changeTODO(id, completed) {
+      this.$store.dispatch('changeTODO', {
         id: id,
-        listID: this.listID
+        completed: completed
       });
     }
   }
@@ -1977,7 +1988,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todosHeaderComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todosHeaderComponent.vue */ "./resources/js/components/todosHeaderComponent.vue");
 /* harmony import */ var _todosListComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todosListComponent.vue */ "./resources/js/components/todosListComponent.vue");
-//
 //
 //
 //
@@ -2022,6 +2032,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'todosHeader',
   data: function data() {
@@ -2030,8 +2041,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    addList: function addList() {
-      this.$store.dispatch('addList', this.newListName);
+    addList: function addList(e) {
+      this.$store.dispatch('addList', {
+        name: this.newListName
+      });
+      e.preventDefault();
     }
   }
 });
@@ -2048,6 +2062,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todosComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todosComponent.vue */ "./resources/js/components/todosComponent.vue");
+//
+//
+//
 //
 //
 //
@@ -6680,7 +6697,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.deleteList[data-v-f9f30ac6] {\n    cursor: pointer;\n    text-decoration: underline;\n}\n.list[data-v-f9f30ac6] {\n    margin: 0 5%;\n    display: inline-block;\n    width: 40%;\n}\n", ""]);
+exports.push([module.i, "\n.lists[data-v-f9f30ac6] { \n    -moz-column-count: 1; \n         column-count: 1;\n}\n@media only screen and (min-width: 800px) {\n.lists[data-v-f9f30ac6] {\n        -moz-column-count: 2;\n             column-count: 2; \n        -moz-column-gap: 10px; \n             column-gap: 10px;\n}\n}\n@media only screen and (min-width: 1200px) {\n.lists[data-v-f9f30ac6] {\n        -moz-column-gap: 50px;\n             column-gap: 50px;\n}\n}\n.deleteList[data-v-f9f30ac6] {\n    cursor: pointer;\n    text-decoration: underline;\n}\n.listname[data-v-f9f30ac6] {\n    overflow-x: auto;\n}\n.list[data-v-f9f30ac6] {\n    margin: 0 5%;\n    display: inline-block;\n    width: 40%;\n}\n", ""]);
 
 // exports
 
@@ -38212,12 +38229,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
+  return _c("div", { staticClass: "d-flex flex-column" }, [
+    _c(
+      "div",
       _vm._l(_vm.todosData, function(todo) {
-        return _c("div", [
-          _c("div", { staticClass: "row px-3" }, [
+        return _c("div", { staticClass: "d-flex" }, [
+          _c("div", { staticClass: "d-flex w-100 px-3 pt-2" }, [
             _c("div", { staticClass: "col-8" }, [
               _c(
                 "div",
@@ -38239,28 +38256,33 @@ var render = function() {
                         : todo.completed
                     },
                     on: {
-                      change: function($event) {
-                        var $$a = todo.completed,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(todo, "completed", $$a.concat([$$v]))
+                      change: [
+                        function($event) {
+                          var $$a = todo.completed,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 &&
+                                _vm.$set(todo, "completed", $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                _vm.$set(
+                                  todo,
+                                  "completed",
+                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                )
+                            }
                           } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                todo,
-                                "completed",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
+                            _vm.$set(todo, "completed", $$c)
                           }
-                        } else {
-                          _vm.$set(todo, "completed", $$c)
+                        },
+                        function($event) {
+                          return _vm.changeTODO(todo.id, todo.completed)
                         }
-                      }
+                      ]
                     }
                   }),
                   _vm._v(" "),
@@ -38309,8 +38331,15 @@ var render = function() {
           ])
         ])
       }),
-      _vm._v(" "),
-      _c("div", { staticClass: "text-center mt-2" }, [
+      0
+    ),
+    _vm._v(" "),
+    _vm.todosData.length == 0
+      ? _c("div", { staticClass: "text-center" }, [_vm._v("No TODOs :(")])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "mt-4" }, [
+      _c("div", { staticClass: "text-center pt-1" }, [
         _c("input", {
           directives: [
             {
@@ -38337,9 +38366,8 @@ var render = function() {
           _vm._v("Add todo")
         ])
       ])
-    ],
-    2
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38404,33 +38432,38 @@ var render = function() {
   return _c("div", { staticClass: "text-center" }, [
     _c("h1", [_vm._v("Your TODO lists")]),
     _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.newListName,
-          expression: "newListName"
-        }
-      ],
-      attrs: { type: "text", placeholder: "Enter new list name" },
-      domProps: { value: _vm.newListName },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
+    _c("form", { on: { submit: _vm.addList } }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.newListName,
+            expression: "newListName"
           }
-          _vm.newListName = $event.target.value
+        ],
+        attrs: {
+          required: "",
+          type: "text",
+          maxlength: "25",
+          placeholder: "Enter new list name"
+        },
+        domProps: { value: _vm.newListName },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.newListName = $event.target.value
+          }
         }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c("span", { staticClass: "add-todo", on: { click: _vm.addList } }, [
-      _vm._v("Add list")
-    ]),
-    _vm._v(" "),
-    _c("hr")
+      }),
+      _c("br"),
+      _vm._v(" "),
+      _c("button", { staticClass: "btn add-todo", attrs: { type: "submit" } }, [
+        _vm._v("Add list")
+      ])
+    ])
   ])
 }
 var staticRenderFns = []
@@ -38457,42 +38490,55 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "w-100" },
+    { staticClass: "w-100 lists" },
     _vm._l(_vm.lists, function(list) {
-      return _c("div", { staticClass: "list mt-3" }, [
-        _c("div", { staticClass: "d-flex" }, [
-          _c(
-            "div",
-            { staticClass: "mb-auto w-100" },
-            [
-              _c("div", { staticClass: "text-center" }, [
-                _c("span", { staticClass: "h5 font-weight-bold" }, [
-                  _vm._v("\n                        " + _vm._s(list.name))
+      return _c(
+        "div",
+        {
+          staticClass:
+            "d-inline-block mx-2 list border p-4 mb-3 bg-white shadow h-100 w-100"
+        },
+        [
+          _c("div", {}, [
+            _c(
+              "div",
+              { staticClass: "w-100" },
+              [
+                _c("div", { staticClass: "text-center" }, [
+                  _c("div", { staticClass: "h5 listname font-weight-bold" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(list.name) +
+                        "\n                            "
+                    ),
+                    _c("span", { staticClass: "font-weight-normal" }, [
+                      _vm._v("\n                                    ("),
+                      _c(
+                        "span",
+                        {
+                          staticClass: "deleteList",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteList(list.id)
+                            }
+                          }
+                        },
+                        [_vm._v("delete list")]
+                      ),
+                      _vm._v(")\n                            ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("hr")
                 ]),
-                _vm._v("\n                        ("),
-                _c(
-                  "span",
-                  {
-                    staticClass: "deleteList",
-                    on: {
-                      click: function($event) {
-                        return _vm.deleteList(list.id)
-                      }
-                    }
-                  },
-                  [_vm._v("delete list")]
-                ),
-                _vm._v(")\n                    ")
-              ]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("todos", { attrs: { listID: list.id } })
-            ],
-            1
-          )
-        ])
-      ])
+                _vm._v(" "),
+                _c("todos", { attrs: { list_id: list.id } })
+              ],
+              1
+            )
+          ])
+        ]
+      )
     }),
     0
   )
@@ -51767,6 +51813,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 Vue.component('todo', __webpack_require__(/*! ./components/todosDashboardComponent.vue */ "./resources/js/components/todosDashboardComponent.vue")["default"]);
 
 _store_store_js__WEBPACK_IMPORTED_MODULE_1__["default"].commit('loadLists');
+_store_store_js__WEBPACK_IMPORTED_MODULE_1__["default"].commit('loadTodos');
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -52167,81 +52214,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    lists: []
+    lists: [],
+    todos: []
   },
   mutations: {
     loadLists: function loadLists(state) {
-      state.lists = [{
-        id: 1,
-        name: 'toda',
-        todos: [{
-          id: 1,
-          name: 'la',
-          completed: false
-        }, {
-          id: 2,
-          name: 'la1',
-          completed: true
-        }, {
-          id: 3,
-          name: 'awdd',
-          completed: false
-        }]
-      }, {
-        id: 2,
-        name: 'toda',
-        todos: [{
-          id: 4,
-          name: 'la',
-          completed: false
-        }, {
-          id: 5,
-          name: 'la1',
-          completed: true
-        }]
-      }, {
-        id: 3,
-        name: 'toda',
-        todos: [{
-          id: 6,
-          name: 'la',
-          completed: false
-        }, {
-          id: 7,
-          name: 'la1',
-          completed: true
-        }]
-      }];
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/lists').then(function (res) {
+        state.lists = res.data;
+      });
+    },
+    loadTodos: function loadTodos(state) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/todos').then(function (res) {
+        state.todos = res.data;
+      });
     },
     addTODO: function addTODO(state, payload) {
-      state.lists.find(function (element) {
-        return element.id == payload.listID;
-      }).todos.push({
-        id: 5,
-        name: payload.name,
-        completed: false
-      });
+      state.todos.push(payload);
     },
     deleteTODO: function deleteTODO(state, payload) {
-      state.lists.find(function (element) {
-        return element.id == payload.listID;
-      }).todos = state.lists.find(function (element) {
-        return element.id == payload.listID;
-      }).todos.filter(function (element) {
-        return element.id != payload.id;
+      state.todos = state.todos.filter(function (element) {
+        return element.id != payload;
       });
     },
+    changeTODO: function changeTODO(state, payload) {
+      state.todos.find(function (element) {
+        return element.id == payload.id;
+      }).completed = payload.completed;
+    },
     addList: function addList(state, payload) {
-      state.lists.push({
-        id: 4,
-        name: payload,
-        todos: []
-      });
+      state.lists.push(payload);
     },
     deleteList: function deleteList(state, payload) {
       state.lists = state.lists.filter(function (element) {
@@ -52251,16 +52260,33 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   },
   actions: {
     addTODO: function addTODO(context, payload) {
-      context.commit('addTODO', payload);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/todos', payload).then(function (res) {
+        context.commit('addTODO', res.data);
+      });
     },
     deleteTODO: function deleteTODO(context, payload) {
-      context.commit('deleteTODO', payload);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]("/api/todos/del/".concat(payload.id)).then(function (res) {
+        if (res.data = 'OK') {
+          context.commit('deleteTODO', payload.id);
+        }
+      });
+    },
+    changeTODO: function changeTODO(context, payload) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/todos/edit', payload).then(function (res) {
+        return context.commit('changeTODO', res.data);
+      });
     },
     addList: function addList(context, payload) {
-      context.commit('addList', payload);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/lists', payload).then(function (res) {
+        context.commit('addList', res.data);
+      });
     },
     deleteList: function deleteList(context, payload) {
-      context.commit('deleteList', payload);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a["delete"]("/api/lists/del/".concat(payload)).then(function (res) {
+        if (res.data = 'OK') {
+          context.commit('deleteList', payload);
+        }
+      });
     }
   },
   getters: {
@@ -52272,9 +52298,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     },
     getTodos: function getTodos(state) {
       return function (payload) {
-        return state.lists.find(function (element) {
-          return element.id == payload;
-        }).todos;
+        return state.todos.filter(function (element) {
+          return element.list_id == payload;
+        });
       };
     }
   }

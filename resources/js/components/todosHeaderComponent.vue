@@ -1,9 +1,10 @@
 <template lang="pug">
     <div class="text-center">
         <h1>Your TODO lists</h1>
-        <input type="text" v-model="newListName" placeholder="Enter new list name"></input></br>
-        <span class="add-todo" @click="addList">Add list</span>
-        <hr>
+        <form @submit="addList">
+            <input required type="text" maxlength="25" v-model="newListName" placeholder="Enter new list name"></br>
+            <button type="submit" class="btn add-todo" >Add list</button>
+        </form>
     </div>
 </template>
 
@@ -16,8 +17,10 @@ export default {
         }
     },
     methods: {
-        addList() {
-            this.$store.dispatch('addList', this.newListName);
+        addList(e) {
+            
+            this.$store.dispatch('addList', {name: this.newListName});
+            e.preventDefault();
         }
     }
 }

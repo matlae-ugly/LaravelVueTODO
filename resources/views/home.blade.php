@@ -4,9 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="card p-5">
-                <todo></todo>
-            </div>
+            <todo></todo>
         </div>
     </div>
 </div>

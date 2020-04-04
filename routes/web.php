@@ -19,7 +19,16 @@ Route::get('/', function () {
 });
 
 Route::get('/profile', 'ProfileController@index')->name('profile');
-Route::get('/lists/getLists', 'ListController@getLists')->name('getLists');
+
+//API
+Route::get('/api/lists', 'ApiController@getLists');
+Route::get('/api/todos', 'ApiController@getTodos');
+Route::post('/api/lists', 'ApiController@addList');
+Route::post('/api/todos', 'ApiController@addTodo');
+Route::delete('/api/lists/del/{id}', 'ApiController@removeLists');
+Route::delete('/api/todos/del/{id}', 'ApiController@removeTodo');
+Route::post('/api/todos/edit', 'ApiController@updateTodo');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

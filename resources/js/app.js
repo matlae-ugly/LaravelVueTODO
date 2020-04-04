@@ -22,6 +22,7 @@ Vue.component('todo', require('./components/todosDashboardComponent.vue').defaul
 
 import store from './store/store.js';
 store.commit('loadLists');
+store.commit('loadTodos');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

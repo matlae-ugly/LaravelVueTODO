@@ -1,28 +1,31 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Axios from 'axios';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        lists: []
+        lists: [],
+        todos: []
     },
     mutations: {
         loadLists: state => {
-            state.lists = [
-                {id: 1, name: 'toda', todos: [{id: 1, name:'la', completed: false},{id: 2, name:'la1', completed: true}, {id: 3, name:'awdd', completed:false}]},
-                {id: 2, name: 'toda', todos: [{id: 4, name:'la', completed: false},{id: 5, name:'la1', completed: true}]},
-                {id: 3, name: 'toda', todos: [{id: 6, name:'la', completed: false},{id: 7, name:'la1', completed: true}]},
-            ];
+            Axios.get('/api/lists').then(res => {state.lists = res.data});
         },
-        addTODO: (state,payload) => {
-            state.lists.find(element => element.id == payload.listID).todos.push({id: 5, name: payload.name, completed:false});
+        loadTodos: state => {
+            Axios.get('/api/todos').then(res => {state.todos = res.data});
+        },
+        addTODO: (state, payload) => {
+            state.todos.push(payload);
         },
         deleteTODO: (state, payload) => {
-            state.lists.find(element => element.id == payload.listID).todos =
-            state.lists.find(element => element.id == payload.listID).todos.filter(element => element.id != payload.id);
+            state.todos = state.todos.filter(element => element.id != payload)
         },
-        addList: (state,payload) => {
-            state.lists.push({id:4, name:payload, todos: []});
+        changeTODO: (state, payload) => {
+            state.todos.find(element => element.id == payload.id).completed = payload.completed;
+        },
+        addList: (state, payload) => {
+            state.lists.push(payload);
         },
         deleteList: (state, payload) => {
             state.lists = state.lists.filter(element => element.id != payload);
@@ -30,16 +33,19 @@ export default new Vuex.Store({
     },
     actions: {
         addTODO: (context, payload) => {
-            context.commit('addTODO', payload);
+            Axios.post('/api/todos', payload).then(res => {context.commit('addTODO', res.data)});
         },
         deleteTODO: (context, payload) => {
-            context.commit('deleteTODO', payload);
+            Axios.delete(`/api/todos/del/${payload.id}`).then(res => {if (res.data = 'OK') { context.commit('deleteTODO', payload.id); }});
         },
-        addList: (context,payload) => {
-            context.commit('addList', payload);
+        changeTODO: (context, payload) => {
+            Axios.post('/api/todos/edit', payload).then(res => context.commit('changeTODO', res.data));
+        },
+        addList: (context, payload) => {
+            Axios.post('/api/lists', payload).then(res => {context.commit('addList', res.data)});
         },
         deleteList: (context,payload) => {
-            context.commit('deleteList', payload);
+            Axios.delete(`/api/lists/del/${payload}`).then(res => {if (res.data = 'OK') { context.commit('deleteList', payload); }});
         }
     },
     getters: {
@@ -50,7 +56,7 @@ export default new Vuex.Store({
             return state.lists;
         },
         getTodos: (state) => (payload) => {
-            return state.lists.find(element => element.id == payload).todos;
+            return state.todos.filter(element => element.list_id == payload);
         }
     }
 })
