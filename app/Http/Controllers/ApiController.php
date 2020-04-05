@@ -27,10 +27,13 @@ class ApiController extends Controller
         return response()->json($todos);
     }
 
-    public function updateTodo  (Request $request){
+    public function updateTodo(Request $request){
         $todo = \App\todos::find($request->id);
         if ($todo->list->user_id == Auth::user()->id) {
             $todo->completed = $request->completed;
+            if (isset($request->order)) {
+                $todo->order = $request->order;
+            }
             $todo->save();
             return response()->json($todo);
         }

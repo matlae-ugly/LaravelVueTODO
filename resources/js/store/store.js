@@ -29,6 +29,9 @@ export default new Vuex.Store({
         },
         deleteList: (state, payload) => {
             state.lists = state.lists.filter(element => element.id != payload);
+        },
+        updateOrder: (state, payload) => {
+            payload.forEach(element => state.todos.find(value => value.id == element.id).order = element.order);
         }
     },
     actions: {
@@ -46,6 +49,9 @@ export default new Vuex.Store({
         },
         deleteList: (context,payload) => {
             Axios.delete(`/api/lists/del/${payload}`).then(res => {if (res.data = 'OK') { context.commit('deleteList', payload); }});
+        },
+        updateOrder: ({context, dispatch},payload) => {
+            payload.forEach(element => { Axios.post('/api/todos/edit', element) });
         }
     },
     getters: {

@@ -18,8 +18,9 @@ class CreateTodosTable extends Migration
             $table->string('name');
             $table->boolean('completed');
             $table->unsignedBigInteger('list_id');
+            $table->integer('order');
             $table->timestamps();
-
+    
             $table->index('list_id');
         });
     }

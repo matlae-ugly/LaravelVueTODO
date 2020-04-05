@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class todos extends Model
 {
     protected $fillable = [
-        'completed', 'name', 'list_id'
+        'completed', 'name', 'list_id', 'order'
     ];
 
     public function list(){
