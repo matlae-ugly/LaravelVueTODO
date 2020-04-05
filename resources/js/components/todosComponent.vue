@@ -1,13 +1,13 @@
 <template lang="pug">
     <div class="d-flex flex-column">
         <div>
-            <draggable v-model='todosData' :sort="true" @start="drag=true" @end="drag=false" v-bind:group="list_id">
+            <draggable v-model='todosData' :sort="true" :options="{handle:'.area'}" @start="drag=true" @end="drag=false" v-bind:group="list_id">
 
                     <div class="d-flex todo" v-for="todo in todosData" v-bind:key="todo.id">
                         
                         <div class="d-flex w-100 px-3 pt-2">
                             <div class="col-8" style="overflow-x: auto;">
-                                <div class="pretty p-svg labelc p-bigger p-curve mt-3">
+                                <div class="pretty p-svg p-bigger p-curve mt-3">
                                     <input v-model="todo.completed" @change="changeTODO(todo.id, todo.completed)" type="checkbox" />
                                     <div class="state p-success">
                                         <svg class="svg svg-icon" viewBox="0 0 20 20">
@@ -18,6 +18,7 @@
                                 </div>
                             </div>
                             <div class="col-4 d-flex flex-row-reverse">
+                                <box-icon name="move" class="labelc area mt-auto" color="black"></box-icon>
                                 <box-icon name='x' color="red" class="mt-auto" animation='tada-hover' @click="deleteTODO(todo.id)"></box-icon>
                             </div>
                         </div>
@@ -79,11 +80,8 @@ export default {
 </script>
 
 <style scoped>
-    .todo {
-        cursor: move;
-    }
     .labelc {
-        cursor: default;
+        cursor: move;
     }
     input {
         border: 0;

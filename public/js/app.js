@@ -1949,6 +1949,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'todos',
@@ -6697,7 +6698,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.todo[data-v-389984ca] {\n    cursor: move;\n}\n.labelc[data-v-389984ca] {\n    cursor: default;\n}\ninput[data-v-389984ca] {\n    border: 0;\n    text-align: center;\n    outline: 0;\n    background: transparent;\n    border-bottom: 1px solid #555;\n}\n.completed[data-v-389984ca] {\n    text-decoration: line-through;\n}\n.add-todo[data-v-389984ca] {\n    text-decoration: underline;\n    cursor: pointer;\n}\nbox-icon[data-v-389984ca] {\n    cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.labelc[data-v-389984ca] {\n    cursor: move;\n}\ninput[data-v-389984ca] {\n    border: 0;\n    text-align: center;\n    outline: 0;\n    background: transparent;\n    border-bottom: 1px solid #555;\n}\n.completed[data-v-389984ca] {\n    text-decoration: line-through;\n}\n.add-todo[data-v-389984ca] {\n    text-decoration: underline;\n    cursor: pointer;\n}\nbox-icon[data-v-389984ca] {\n    cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -41989,7 +41990,11 @@ var render = function() {
         _c(
           "draggable",
           {
-            attrs: { sort: true, group: _vm.list_id },
+            attrs: {
+              sort: true,
+              options: { handle: ".area" },
+              group: _vm.list_id
+            },
             on: {
               start: function($event) {
                 _vm.drag = true
@@ -42018,9 +42023,7 @@ var render = function() {
                   [
                     _c(
                       "div",
-                      {
-                        staticClass: "pretty p-svg labelc p-bigger p-curve mt-3"
-                      },
+                      { staticClass: "pretty p-svg p-bigger p-curve mt-3" },
                       [
                         _c("input", {
                           directives: [
@@ -42107,6 +42110,11 @@ var render = function() {
                   "div",
                   { staticClass: "col-4 d-flex flex-row-reverse" },
                   [
+                    _c("box-icon", {
+                      staticClass: "labelc area mt-auto",
+                      attrs: { name: "move", color: "black" }
+                    }),
+                    _vm._v(" "),
                     _c("box-icon", {
                       staticClass: "mt-auto",
                       attrs: {
