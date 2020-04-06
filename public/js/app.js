@@ -1945,11 +1945,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'todos',
@@ -42095,11 +42090,13 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "label",
-                            { class: { completed: todo.completed } },
-                            [_vm._v(_vm._s(todo.name))]
-                          )
+                          _c("div", [
+                            _c(
+                              "label",
+                              { class: { completed: todo.completed } },
+                              [_vm._v(_vm._s(todo.name))]
+                            )
+                          ])
                         ])
                       ]
                     )
