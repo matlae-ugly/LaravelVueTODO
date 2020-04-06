@@ -1,4 +1,4 @@
 <h2>Simple, opensource TODO application.</h2>
 <h5>Technologies used: Laravel, Vue.js, Vuex, Vue.Draggable</h5>
 
-<a href="http://whispering-shore-28861.herokuapp.com">Live preview</a> 
+<a href="https://laravel-todo-matlae.herokuapp.com/">Live preview</a> 
